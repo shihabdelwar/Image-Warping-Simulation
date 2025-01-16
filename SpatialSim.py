@@ -68,8 +68,39 @@ cv2.imshow("Original Image", image)
 cv2.imshow("Swirl Effect", swirled)
 cv2.imshow("Fisheye Effect", fisheye)
 
+# Set up the window
+cv2.namedWindow('Zooming Image', cv2.WINDOW_NORMAL)
+
+# Define the pulse parameters
+pulse_factor = 0.08  # How much the zoom changes each frame
+min_scale = 1  # Minimum zoom-out scale (50%)
+max_scale = 2.0  # Maximum zoom-in scale (200%)
+scale = 1.0  # Initial scale (100%)
+
+# Get the center of the image for perspective transformation
+center = (image.shape[1] // 2, image.shape[0] // 2)
+
+while True:
+    # Calculate the perspective transformation matrix
+    # We scale the matrix to simulate "zoom" by adjusting the warp size
+    M = cv2.getRotationMatrix2D(center, 0, scale)
+
+    # Apply perspective warp (zoom effect)
+    zoomed_image = cv2.warpAffine(image, M, (image.shape[1], image.shape[0]))
+
+    # Display the zoomed image
+    cv2.imshow('Zooming Image', zoomed_image)
+
+    # Update the scale for the pulsing effect
+    scale += pulse_factor
+    if scale >= max_scale or scale <= min_scale:
+        pulse_factor = -pulse_factor  # Reverse direction when reaching limits
+
+    # Wait for a short period and check for a key press to exit
+    key = cv2.waitKey(45)  # Slow down for better visibility (45 ms delay)
+    if key == 27:  # Press 'Esc' to exit the loop
+        break
+
 # Clean up and close the window
-cv2.destroyAllWindows()
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
