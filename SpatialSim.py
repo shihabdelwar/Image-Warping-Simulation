@@ -53,7 +53,7 @@ def fisheye_effect(image, strength=2):
     distorted_image = cv2.remap(image, map_x_new, map_y_new, interpolation=cv2.INTER_LINEAR)
     return distorted_image
 
-# Load an image (replace 'your_image.jpg' with your file path)
+# Load an image (replace '<address>.jpg' with file path, sample used)
 image = cv2.imread("Downloads/IMG_0765.JPG")
 if image is None:
     print("Error: Image not found.")
